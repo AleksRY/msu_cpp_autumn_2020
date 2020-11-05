@@ -10,7 +10,7 @@ Allocator::Allocator()
 
 Allocator::~Allocator()
 {
-    delete mem;
+    delete[] mem;
 }
 
 void Allocator::makeAllocator(size_t maxSize)
@@ -21,15 +21,10 @@ void Allocator::makeAllocator(size_t maxSize)
     }
     else
     {
-        delete mem;
+        delete[] mem;
         mem = new char[maxSize];
     }
     
-    if(mem == nullptr)
-    {
-        std::cerr << "Allocation error" <<std::endl;
-        return;
-    }
     offset = 0;
     totalSize = maxSize;
     std::cout << mem;
@@ -44,8 +39,9 @@ char* Allocator::alloc(size_t size)
     }
     if(size+offset <= totalSize)
     {
+        char* temp = mem + offset;
         offset += size;
-        return mem + offset;
+        return temp;
     }
     else
     {
